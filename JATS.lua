@@ -19,6 +19,7 @@ local sections = {}
 local back = {}
 local references = {}
 local figures = {}
+local notes = {}
 
 -- This function is called once for the whole document. Parameters:
 -- body is a string, metadata is a table, variables is a table.
@@ -46,6 +47,14 @@ function Doc(body, metadata, variables)
 
   if #back > 0 then
     body = body .. '\n' .. xml('back', '\n' .. table.concat(back, '\n'))
+  end
+
+  if #notes > 0 then
+  
+    for _,note in pairs(notes) do
+      body = body .. '\n' .. xml('fn',note)
+    end
+   
   end
 
   return body
@@ -346,7 +355,15 @@ function Header(lev, s, attr)
 end
 
 function Note(s)
-  return s
+  local num = #notes + 1
+  -- insert the back reference right before the final closing tag.
+  s = string.gsub(s,
+          '(.*)</', '%1 <a href="#fnref' .. num ..  '">&#8617;</a></')
+  -- add a list item with the note to the note table.
+  table.insert(notes, '<label id="fn' .. num .. '">'.. num .. '</label>' .. s)
+  -- return the footnote reference, linked to the note.
+  return '<a id="fnref' .. num .. '" href="#fn' .. num ..
+            '"><sup>' .. num .. '</sup></a>'
 end
 
 function CodeBlock(s, attr)
