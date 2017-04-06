@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.0 20120330//EN"
-                  "JATS-journalpublishing1.dtd">
-$if(article.type)$
-<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.0" article-type="$article.type$">
-$else$
-<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.0" article-type="other">
-$endif$
+<!DOCTYPE article
+ PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.1 20151215//EN"
+ "http://jats.nlm.nih.gov/publishing/1.1/JATS-journalpublishing1.dtd">
+<article dtd-version="1.1" 
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:mml="http://www.w3.org/1998/Math/MathML"
+ article-type="$article.type$">
 <front>
 <journal-meta>
 $if(journal.publisher-id)$
@@ -26,10 +26,10 @@ $if(journal.abbrev-title)$
 $endif$
 </journal-title-group>
 $if(journal.pissn)$
-<issn pub-type="ppub">$journal.pissn$</issn>
+<issn publication-format="print">$journal.pissn$</issn>
 $endif$
 $if(journal.eissn)$
-<issn pub-type="epub">$journal.eissn$</issn>
+<issn publication-format="electronic">$journal.eissn$</issn>
 $endif$
 <publisher>
 <publisher-name>$journal.publisher-name$</publisher-name>
@@ -78,7 +78,7 @@ $if(author)$
 $for(author)$
 <contrib contrib-type="author">
 $if(author.orcid)$
-<contrib-id contrib-id-type="orcid">$author.orcid$</contrib-id>
+<uri content-type="orcid" xlink:href="$author.orcid$"/>
 $endif$
 <name>
 $if(author.surname)$
@@ -92,13 +92,18 @@ $if(author.email)$
 <email>$author.email$</email>
 $endif$
 $if(author.aff-id)$
-<xref ref-type="aff" rid="aff-$contrib.aff-id$"/>
+<xref ref-type="aff" rid="aff-$author.aff-id$"/>
 $endif$
 $if(author.cor-id)$
 <xref ref-type="corresp" rid="cor-$author.cor-id$"><sup>*</sup></xref>
 $endif$
 </contrib>
 $endfor$
+$if(affiliations.aff)$
+$for(affiliations)$
+<aff id="aff-$affiliations.aff$"><institution>$affiliations.aff$</institution></aff>
+$endfor$
+$endif$
 </contrib-group>
 $endif$
 $if(article.author-notes)$
@@ -123,13 +128,13 @@ $else$
 <pub-date pub-type="epub">
 $endif$
 $if(date.day)$
-<day>$pub-date.day$</day>
+<day>$date.day$</day>
 $endif$
 $if(date.month)$
-<month>$pub-date.month$</month>
+<month>$date.month$</month>
 $endif$
 $if(date.year)$
-<year>$pub-date.year$</year>
+<year>$date.year$</year>
 $else$
 <string-date>$date$</string-date>
 $endif$
@@ -185,6 +190,17 @@ $if(article.funding-statement)$
 <funding-group>
 <funding-statement>$article.funding-statement$</funding-statement>
 </funding-group>
+$endif$
+$if(article.abstract)$
+<abstract abstract-type="key-points">$article.abstract$</abstract>
+$endif$
+$if(peerreview)$
+<custom-meta-group>
+<custom-meta>
+<meta-name xlink:href="https://www.tsv.fi/fi/palvelut/tunnus">Vertaisarviointi</meta-name>
+<meta-value>Artikkeli on vertaisarvioitu noudattaen Tieteellisten seurain valtuuskunnan määrittämiä vertaisarviointikriteerejä.</meta-value>
+</custom-meta>
+</custom-meta-group>
 $endif$
 </article-meta>
 $if(notes)$
