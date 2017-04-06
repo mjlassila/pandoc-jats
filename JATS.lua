@@ -57,6 +57,8 @@ function Doc(body, metadata, variables)
    
   end
 
+
+
   return body
 end
 
@@ -204,17 +206,23 @@ end
 
 -- add appropriate sec-type attribute
 function sec_type_helper(s)
-  local map = { ['Abstract']= 'abstract',
-                ['Acknowledgments']= 'acknowledgements',
-                ['Author Summary']= 'author-summary',
+  local map = { ['Abstract'] = 'abstract',
+                ['Abstrakti'] = 'abstract',
+                ['Acknowledgments'] = 'acknowledgements',
+                ['Kiitokset'] = 'acknowledgements',
+                ['Author Summary'] = 'author-summary',
                 ['Conclusions'] = 'conclusions',
                 ['Discussion'] = 'discussion',
+                ['Keskustelua'] = 'discussion',
                 ['Glossary'] = 'glossary',
                 ['Introduction'] = 'intro',
-                ['Materials and Methods'] = 'materials|methods',
+                ['Johdanto'] = 'intro',
+                ['Materials and Methods'] = 'materials-methods',
                 ['Notes'] = 'notes',
-                ['References']= 'references',
-                ['Results']= 'results',
+                ['References'] = 'references',
+                ['Lähteet'] = 'references',
+                ['Results'] = 'results',
+                ['Tulokset']= 'results',
                 ['Supporting Information']= 'supplementary-material',
                 ['Supplementary Information']= 'supplementary-material' }
   return map[s]
@@ -394,8 +402,7 @@ function Table(caption, aligns, widths, headers, rows)
   table.insert(buffer, '<table-wrap>')
   if caption ~= '' then
     -- if caption begins with <bold> text, make it the <title>
-    caption = string.gsub('<p>' .. caption, "^<p><bold>(.-)</bold>%s", "<title>%1</title>\n<p>")
-    add(xml('caption>', caption))
+    add(xml('caption', xml('title',caption)))
   end
   add("<table>")
   if widths and widths[1] ~= 0 then
@@ -642,8 +649,8 @@ function CaptionedImage(s, src, title)
   title = string.gsub(title, "^<bold>(.-)</bold>%s", function(t) xml('title', t) end)
   local num = #figures + 1
   local attr = { ['id'] = string.format("g%03d", num) }
-  local caption = xml('caption', s)
-  local fig = xml('fig', caption .. Image(nil, src, title), attr)
+  local caption = xml('caption', xml('title',title))
+  local fig = xml('fig', caption .. Image(nil, s, title), attr)
 
   table.insert(figures, fig)
   return fig

@@ -61,7 +61,9 @@
   <macro name="link">
     <choose>
       <if match="any" variable="DOI">
-        <text variable="DOI" />
+        <group prefix="&lt;pub-id pub-id-type=&quot;doi&quot;&gt;" suffix="&lt;/pub-id&gt;">
+        <text variable="DOI"/>
+        </group>
       </if>
     </choose>
     <choose>
@@ -71,7 +73,9 @@
     </choose>
     <choose>
       <if variable="URL" match="any">
+        <group prefix="&lt;pub-id pub-id-type=&quot;doi&quot;&gt;" suffix="&lt;/pub-id&gt;">
         <text variable="URL" />
+      </group>
       </if>
     </choose>
   </macro>
