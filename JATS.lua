@@ -221,6 +221,7 @@ function sec_type_helper(s)
                 ['Notes'] = 'notes',
                 ['References'] = 'references',
                 ['Lähteet'] = 'references',
+                ['Kirjallisuus'] = 'references',
                 ['Results'] = 'results',
                 ['Tulokset']= 'results',
                 ['Supporting Information']= 'supplementary-material',
@@ -370,8 +371,8 @@ function Note(s)
   -- add a list item with the note to the note table.
   table.insert(notes, '<label id="fn' .. num .. '">'.. num .. '</label>' .. s)
   -- return the footnote reference, linked to the note.
-  return '<a id="fnref' .. num .. '" href="#fn' .. num ..
-            '"><sup>' .. num .. '</sup></a>'
+  return '<xref ref-type="fn" rid="fnref' .. num .. '" href="#fn' .. num ..
+            '"><sup>' .. num .. '</sup></xref>'
 end
 
 function CodeBlock(s, attr)
