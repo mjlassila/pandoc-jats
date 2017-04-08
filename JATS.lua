@@ -457,7 +457,7 @@ end
 function List(items, attr)
   local buffer = {}
   for _, item in pairs(items) do
-    table.insert(buffer, xml('list-item', item))
+    table.insert(buffer, xml('list-item', xml('p',item)))
   end
   return xml('list', '\n' .. table.concat(buffer, '\n') .. '\n', attr)
 end
