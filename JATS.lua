@@ -44,18 +44,20 @@ function Doc(body, metadata, variables)
   end
 
   body = xml('body', '\n' .. table.concat(sections, '\n') .. '\n')
-
-  if #back > 0 then
-    body = body .. '\n' .. xml('back', '\n' .. table.concat(back, '\n'))
-  end
-
+  notes_group = ''
   if #notes > 0 then
   
     for _,note in pairs(notes) do
-      body = body .. '\n' .. xml('fn',note)
+      notes_group = notes_group .. '\n' .. note
     end
    
   end
+
+  if #back > 0 or #notes_group > 0 then
+    body = body .. '\n' .. xml('back', '\n' .. table.concat(back, '\n') .. xml('fn-group',notes_group))
+  end
+
+  
 
 
 
@@ -367,12 +369,12 @@ function Note(s)
   local num = #notes + 1
   -- insert the back reference right before the final closing tag.
   s = string.gsub(s,
-          '(.*)</', '%1 <a href="#fnref' .. num ..  '">&#8617;</a></')
+          '(.*)</', '%1 </')
   -- add a list item with the note to the note table.
-  table.insert(notes, '<label id="fn' .. num .. '">'.. num .. '</label>' .. s)
+  table.insert(notes, '<fn id="fnref' .. num ..'"><label id="fn' .. num .. '">'.. num .. '</label>' .. s .. '</fn>')
   -- return the footnote reference, linked to the note.
   return '<xref ref-type="fn" rid="fnref' .. num .. '" href="#fn' .. num ..
-            '"><sup>' .. num .. '</sup></xref>'
+            '">' .. num .. '</xref>'
 end
 
 function CodeBlock(s, attr)
@@ -633,13 +635,13 @@ function LineBreak()
 end
 
 function Link(s, src, title)
-  if src ~= '' and s ~= '' then
+  if src ~= '' and s ~= '' and not src:find("doi") then
     attr = { ['ext-link-type'] = 'uri',
              ['xlink:href'] = escape(src),
              ['xlink:title'] = escape(title),
              ['xlink:type'] = 'simple' }
 
-    return xml('ext-link', s, attr)
+    return xml('uri', src)
   else
     return s
   end

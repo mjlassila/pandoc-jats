@@ -73,13 +73,15 @@
     </choose>
     <choose>
       <if variable="URL" match="any">
+        <group prefix="&lt;comment&gt;" suffix="&lt;/comment&gt;">
         <text variable="URL" />
+      </group>
       </if>
     </choose>
   </macro>
   <macro name="date">
     <choose>
-      <if type="article-journal article-magazine article-newspaper report patent" match="any">
+      <if type="article-journal article-magazine article-newspaper report patent book chapter webpage" match="any">
         <group prefix="&lt;date" suffix="&lt;/date&gt;">
           <date variable="issued" prefix=" iso-8601-date=&quot;" suffix="&quot;&gt;">
             <date-part name="year" range-delimiter=""/>
@@ -144,7 +146,7 @@
           <text value="review"/>
         </else-if>
         <else>
-          <text value="standard"/>
+          <text value="other"/>
         </else>
       </choose>
     </group>
